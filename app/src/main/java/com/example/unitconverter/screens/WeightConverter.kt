@@ -18,15 +18,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.unitconverter.R
-import com.example.unitconverter.viewmodels.DistancesViewModel
+import com.example.unitconverter.viewmodels.WeightViewModel
 
 @Composable
-fun DistancesConverter() {
-    val viewModel: DistancesViewModel = viewModel()
-    val strMeter = stringResource(id = R.string.meter)
-    val strMile = stringResource(id = R.string.mile)
-    val currentValue = viewModel.distance.observeAsState(viewModel.distance.value ?: "")
-    val unit = viewModel.unit.observeAsState(viewModel.unit.value ?: R.string.meter)
+fun WeightConverter() {
+    val viewModel: WeightViewModel = viewModel()
+    val strKg = stringResource(id = R.string.kg)
+    val strPound = stringResource(id = R.string.pound)
+    val currentValue = viewModel.weight.observeAsState(viewModel.weight.value ?: "")
+    val unit = viewModel.unit.observeAsState(viewModel.unit.value ?: R.string.kg)
     var result by rememberSaveable { mutableStateOf("") }
     val calc = {
         val temp = viewModel.convert()
@@ -34,26 +34,26 @@ fun DistancesConverter() {
             ""
         else
             "$temp${
-                if (unit.value == R.string.meter)
-                    " $strMile"
-                else " $strMeter"
+                if (unit.value == R.string.kg)
+                    " $strPound"
+                else " $strKg"
             }"
     }
     val enabled by remember(currentValue.value) {
-        mutableStateOf(!viewModel.getDistanceAsFloat().isNaN())
+        mutableStateOf(!viewModel.getWeightAsFloat().isNaN())
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DistanceTextField(
-            distance = currentValue,
+        WeightTextField(
+            weight = currentValue,
             modifier = Modifier.padding(bottom = 16.dp,top = 32.dp),
             callback = calc,
             viewModel = viewModel
         )
-        DistanceScaleButtonGroup(
+        WeightScaleButtonGroup(
             selected = unit,
             modifier = Modifier.padding(bottom = 16.dp)
         ) { resId: Int ->
@@ -68,7 +68,7 @@ fun DistancesConverter() {
         if (result.isNotEmpty()) {
             Text(
                 text = result,
-                style = MaterialTheme.typography.h3 ,
+                style = MaterialTheme.typography.h3,
                 modifier = Modifier.padding(top = 32.dp)
             )
         }
@@ -76,19 +76,19 @@ fun DistancesConverter() {
 }
 
 @Composable
-fun DistanceTextField(
-    distance: State<String>,
+fun WeightTextField(
+    weight: State<String>,
     modifier: Modifier = Modifier,
     callback: () -> Unit,
-    viewModel: DistancesViewModel
+    viewModel: WeightViewModel
 ) {
     TextField(
-        value = distance.value,
+        value = weight.value,
         onValueChange = {
-            viewModel.setDistance(it)
+            viewModel.setWeight(it)
         },
         placeholder = {
-            Text(text = stringResource(id = R.string.placeholder_distance))
+            Text(text = stringResource(id = R.string.placeholder_weight))
         },
         modifier = modifier,
         keyboardActions = KeyboardActions(onAny = {
@@ -103,21 +103,21 @@ fun DistanceTextField(
 }
 
 @Composable
-fun DistanceScaleButtonGroup(
+fun WeightScaleButtonGroup(
     selected: State<Int>,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit
 ) {
     val sel = selected.value
     Row(modifier = modifier) {
-        DistanceRadioButton(
-            selected = sel == R.string.meter,
-            resId = R.string.meter,
+        WeightRadioButton(
+            selected = sel == R.string.kg,
+            resId = R.string.kg,
             onClick = onClick
         )
-        DistanceRadioButton(
-            selected = sel == R.string.mile,
-            resId = R.string.mile,
+        WeightRadioButton(
+            selected = sel == R.string.pound,
+            resId = R.string.pound,
             onClick = onClick,
             modifier = Modifier.padding(start = 16.dp)
         )
@@ -125,7 +125,7 @@ fun DistanceScaleButtonGroup(
 }
 
 @Composable
-fun DistanceRadioButton(
+fun WeightRadioButton(
     selected: Boolean,
     resId: Int,
     onClick: (Int) -> Unit,

@@ -13,15 +13,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.unitconverter.screens.DistancesConverter
-import com.example.unitconverter.screens.Screen
-import com.example.unitconverter.screens.TemperatureConverter
+import com.example.unitconverter.screens.*
+import com.example.unitconverter.ui.theme.UnitConverterTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            UnitConverter()
+            UnitConverterTheme {
+                UnitConverter()
+            }
         }
     }
 }
@@ -35,13 +36,13 @@ fun UnitConverter() {
                 title = {
                     Text(text = stringResource(id = R.string.app_name))
                 }
-            )
+                )
         },
         bottomBar = {
             UnitConverterBottomBar(navController)
         }
     ) {
-        UnitConveterNavHost(navController)
+        UnitConverterNavHost(navController)
     }
 }
 
@@ -77,7 +78,7 @@ fun UnitConverterBottomBar(navController: NavHostController) {
 }
 
 @Composable
-fun UnitConveterNavHost(navController: NavHostController) {
+fun UnitConverterNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = Screen.screens.first().route
@@ -87,6 +88,12 @@ fun UnitConveterNavHost(navController: NavHostController) {
         }
         composable(Screen.screens[1].route) {
             DistancesConverter()
+        }
+        composable(Screen.screens[2].route) {
+            WeightConverter()
+        }
+        composable(Screen.screens[3].route) {
+            PressureConverter()
         }
     }
 }

@@ -12,4 +12,14 @@
     <string name="meter">m</string>
     <string name="mile">mi</string>
     <string name="placeholder_distance">distance</string>
+
+    <string name="weights">Mass</string>
+    <string name="kg">kg</string>
+    <string name="pound">pound</string>
+    <string name="placeholder_weight">mass</string>
+
+    <string name="pressure">Pressure</string>
+    <string name="bar">bar</string>
+    <string name="psi">psi</string>
+    <string name="placeholder_pressure">pressure</string>
 </resources>

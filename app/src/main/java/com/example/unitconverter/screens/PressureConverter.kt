@@ -18,15 +18,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.unitconverter.R
-import com.example.unitconverter.viewmodels.DistancesViewModel
+import com.example.unitconverter.viewmodels.PressureViewModel
 
 @Composable
-fun DistancesConverter() {
-    val viewModel: DistancesViewModel = viewModel()
-    val strMeter = stringResource(id = R.string.meter)
-    val strMile = stringResource(id = R.string.mile)
-    val currentValue = viewModel.distance.observeAsState(viewModel.distance.value ?: "")
-    val unit = viewModel.unit.observeAsState(viewModel.unit.value ?: R.string.meter)
+fun PressureConverter() {
+    val viewModel: PressureViewModel = viewModel()
+    val strBar = stringResource(id = R.string.bar)
+    val strPsi = stringResource(id = R.string.psi)
+    val currentValue = viewModel.pressure.observeAsState(viewModel.pressure.value ?: "")
+    val unit = viewModel.unit.observeAsState(viewModel.unit.value ?: R.string.bar)
     var result by rememberSaveable { mutableStateOf("") }
     val calc = {
         val temp = viewModel.convert()
@@ -34,26 +34,26 @@ fun DistancesConverter() {
             ""
         else
             "$temp${
-                if (unit.value == R.string.meter)
-                    " $strMile"
-                else " $strMeter"
+                if (unit.value == R.string.bar)
+                    " $strPsi"
+                else " $strBar"
             }"
     }
     val enabled by remember(currentValue.value) {
-        mutableStateOf(!viewModel.getDistanceAsFloat().isNaN())
+        mutableStateOf(!viewModel.getPressureAsFloat().isNaN())
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DistanceTextField(
-            distance = currentValue,
+        PressureTextField(
+            pressure = currentValue,
             modifier = Modifier.padding(bottom = 16.dp,top = 32.dp),
             callback = calc,
             viewModel = viewModel
         )
-        DistanceScaleButtonGroup(
+        PressureScaleButtonGroup(
             selected = unit,
             modifier = Modifier.padding(bottom = 16.dp)
         ) { resId: Int ->
@@ -68,7 +68,7 @@ fun DistancesConverter() {
         if (result.isNotEmpty()) {
             Text(
                 text = result,
-                style = MaterialTheme.typography.h3 ,
+                style = MaterialTheme.typography.h3,
                 modifier = Modifier.padding(top = 32.dp)
             )
         }
@@ -76,19 +76,19 @@ fun DistancesConverter() {
 }
 
 @Composable
-fun DistanceTextField(
-    distance: State<String>,
+fun PressureTextField(
+    pressure: State<String>,
     modifier: Modifier = Modifier,
     callback: () -> Unit,
-    viewModel: DistancesViewModel
+    viewModel: PressureViewModel
 ) {
     TextField(
-        value = distance.value,
+        value = pressure.value,
         onValueChange = {
-            viewModel.setDistance(it)
+            viewModel.setPressure(it)
         },
         placeholder = {
-            Text(text = stringResource(id = R.string.placeholder_distance))
+            Text(text = stringResource(id = R.string.placeholder_pressure))
         },
         modifier = modifier,
         keyboardActions = KeyboardActions(onAny = {
@@ -103,21 +103,21 @@ fun DistanceTextField(
 }
 
 @Composable
-fun DistanceScaleButtonGroup(
+fun PressureScaleButtonGroup(
     selected: State<Int>,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit
 ) {
     val sel = selected.value
     Row(modifier = modifier) {
-        DistanceRadioButton(
-            selected = sel == R.string.meter,
-            resId = R.string.meter,
+        PressureRadioButton(
+            selected = sel == R.string.bar,
+            resId = R.string.bar,
             onClick = onClick
         )
-        DistanceRadioButton(
-            selected = sel == R.string.mile,
-            resId = R.string.mile,
+        PressureRadioButton(
+            selected = sel == R.string.psi,
+            resId = R.string.psi,
             onClick = onClick,
             modifier = Modifier.padding(start = 16.dp)
         )
@@ -125,7 +125,7 @@ fun DistanceScaleButtonGroup(
 }
 
 @Composable
-fun DistanceRadioButton(
+fun PressureRadioButton(
     selected: Boolean,
     resId: Int,
     onClick: (Int) -> Unit,

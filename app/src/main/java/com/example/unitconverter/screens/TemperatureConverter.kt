@@ -39,8 +39,8 @@ fun TemperatureConverter() {
         else
             "$temp${
                 if (scale.value == R.string.celsius)
-                    strFahrenheit
-                else strCelsius
+                    " $strFahrenheit"
+                else " $strCelsius"
             }"
     }
     Column(
@@ -49,7 +49,7 @@ fun TemperatureConverter() {
     ) {
         TemperatureTextField(
             temperature = currentValue,
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier.padding(bottom = 16.dp,top = 32.dp),
             callback = calc,
             viewModel = viewModel
         )
@@ -66,7 +66,8 @@ fun TemperatureConverter() {
         if (result.isNotEmpty()) {
             Text(
                 text = result,
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.h3,
+                modifier = Modifier.padding(top = 32.dp)
             )
         }
     }
